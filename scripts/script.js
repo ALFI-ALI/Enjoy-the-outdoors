@@ -9,3 +9,8 @@ navEl.addEventListener("click", ()=>{
     navEl.classList.remove("nav--open");
     hamburgerEl.classList.remove("hamburger--open");
 })
+
+
+
+
+

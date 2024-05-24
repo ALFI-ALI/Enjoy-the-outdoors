@@ -13,6 +13,7 @@
 <script src="/scripts/script.js" defer></script>
 <!--<script src="/scripts/scripts/locationData.js"></script>-->
 <script src="/scripts/scripts/parkTypeData.js"></script>
+<script src="/scripts/scripts/locationData.js"></script>
 <script src="/scripts/scripts/nationalParkData.js"></script>
     <title>Document</title>
 </head>
@@ -23,13 +24,13 @@
             <nav class="nav">
                 <ul class="nav__list">
                     <li class="nav__item">
-                        <a href="#" class="nav__link">Home</a>
+                        <a href="index.html" class="nav__link">Home</a>
                     </li>
                     <li class="nav__item">
-                        <a href="#" class="nav__link">National Parks</a>
+                        <a href="nParks.html" class="nav__link">National Parks</a>
                     </li>
                     <li class="nav__item">
-                        <a href="#" class="nav__link">Mountains</a>
+                        <a href="mountain.html" class="nav__link">Mountains</a>
                     </li>
                 </ul>
             </nav>
@@ -52,10 +53,42 @@
     </div>
     <select name="national" id="np">
     </select>
+    <div id="display"></div></div>
     <input type="text" placeholder="search...." id="show">
     <button id="btns" onclick="sear()">Search</button>
     <script>
-        const dropdown =  document.getElementById('np');
+         document.addEventListener('DOMContentLoaded', () => {
+            const dropdown = document.getElementById('np');
+            const displayDiv = document.getElementById('display');
+            const fragment = document.createDocumentFragment();
+
+            nationalParksArray .forEach(nationalParksArray => {
+                let option = document.createElement('option');
+                option.value = nationalParksArray .name;
+                option.textContent = nationalParksArray .LocationID;
+                fragment.appendChild(option);
+            });
+
+            dropdown.appendChild(fragment);
+
+            dropdown.addEventListener('change', (event) => {
+                const selectedn = nationalParksArray.find(mountain => mountain.name === event.target.value);
+                if (selectedn) {
+                    displayDiv.innerHTML = `
+                        <h2>${selectedn.name}</h2>
+                        <p><strong>Elevation:</strong> ${selectedn.elevation}</p>
+                        <p><strong>Effort:</strong> ${selectedn. effort}</p>
+                        <p><img src="${selectedMountain.img}" alt="${selectedMountain.name}" style="max-width: 100%; height: auto;"></p>
+                        <p><strong>Description:</strong> ${selectedMountain.desc}</p>
+                        <p><strong>Coords:</strong> ${selectedMountain.coords.lat}${selectedMountain.coords. lng}</p>
+                    `;
+                } else {
+                    displayDiv.innerHTML = '';
+                }
+            });
+        });
+            
+        /*const dropdown =  document.getElementById('np');
         const fragment =  document.createDocumentFragment();
 
         nationalParksArray.forEach( nationalParksArray => {
@@ -67,7 +100,7 @@
             
         });
 
-      /*  function sear() {
+       function sear() {
                 let selectnational = dropdown.value;
                 let national = nationalParksArray.find(n => n.State === selectnational);
                 display.textContent = `location: ${nationalParksArray.State}`;
@@ -79,6 +112,26 @@
 
         dropdown.appendChild(fragment);*/
     </script>
+      <!--footer -->
+      <footer>
+        <div class="footerContainer">
+           <!-- <div class="socialIcons">
+                <a href="#"><i class=" fa-facebook"></i></a>
+                <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#"><i class="fa-brands fa-youtube"></i></a>
+            </div>-->
+            <div class="footerNav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="nParks.html">National Parks</a></li>
+                    <li><a href="mountain.html">Mountains</a></li>
+                </ul>
+            </div>
+            <div class="footerBottom">
+                <p>Copyright &COPY; 2024; Designed by <span class="des">Alfi</span></p>
+            </div>
+        </div>
+    </footer>
 
    
     

@@ -1,0 +1,29 @@
+
+
+/*cart*/
+
+.container{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.card{
+    background: white;
+    width: 500px;
+    margin: 10px;
+    border-radius: 15px;
+
+}
+.card-image{
+    height: 270px;
+    margin-bottom: 15px;
+    background-size: cover;
+    border-radius: 15px 15px 0 0;
+}
+.car-1{
+    background-image:url(/images/Cannon-StoryImg_2.jpg);
+}
+.car-2{
+    background-image: url(/images/Carrigain-StoryImage_2.jpg);
+}
+
