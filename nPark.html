@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="scripts/scripts/locationData.js" defer></script>
+    <script src="scripts/scripts/parkTypeData.js" defer></script>
+    <script src="scripts/scripts/nationalParkData.js" defer></script>
+    <script src="scripts/script.js" defer></script>
+    <title>Search National Parks</title>
+</head>
+<body>
+    <header class="header">
+        <div class="header__content">
+            <a href="#" class="logo">Enjoy-the-Outdoors</a>
+            <nav class="nav">
+                <ul class="nav__list">
+                    <li class="nav__item"><a href="index.html" class="nav__link">Home</a></li>
+                    <li class="nav__item"><a href="nParks.html" class="nav__link">National Parks</a></li>
+                    <li class="nav__item"><a href="mountain.html" class="nav__link">Mountains</a></li>
+                </ul>
+            </nav>
+            <div class="hamburger">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div> 
+        </div>
+    </header>
+    <div class="searchTitel">
+        <h1>Looking for National Parks!</h1>
+    </div>
+    <div class="searchby">
+        <label for="searchtype">Search by:</label>
+        <label for="option1">Park Location:</label>
+        <input type="radio" id="option1" name="selectedOption" value="Location">
+        <label for="option2">Park Type:</label>
+        <input type="radio" id="option2" name="selectedOption" value="Type">
+    </div>
+    <select name="national" id="np" class="form-select my-3"><option value="option"></option></select>
+    <button id="btns" class="btn btn-primary">Search</button>
+    <div id="display" class="my-3"></div>
+    <footer>
+        <div class="footerContainer">
+            <div class="footerNav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="nParks.html">National Parks</a></li>
+                    <li><a href="mountain.html">Mountains</a></li>
+                </ul>
+            </div>
+            <div class="footerBottom">
+                <p>Copyright &COPY; 2024; Designed by <span class="des">Alfi</span></p>
+            </div>
+        </div>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dropdown = document.getElementById('np');
+            const displayDiv = document.getElementById('display');
+            const searchButton = document.getElementById('btns');
+            let searchType = '';
+        
+            document.querySelectorAll('input[name="selectedOption"]').forEach(radio => {
+                radio.addEventListener('change', (event) => {
+                    searchType = event.target.value;
+                    populateDropdown();
+                });
+            });
+        
+            function populateDropdown() {
+                dropdown.innerHTML = '';
+                const fragment = document.createDocumentFragment();
+        
+                if (searchType === 'Location') {
+                    locationsArray.forEach(location => {
+                        const option = document.createElement('option');
+                        option.value = location;
+                        option.textContent = location;
+                        fragment.appendChild(option);
+                    });
+                } else if (searchType === 'Type') {
+                    parkTypesArray.forEach(type => {
+                        const option = document.createElement('option');
+                        option.value = type;
+                        option.textContent = type;
+                        fragment.appendChild(option);
+                    });
+                }
+        
+                dropdown.appendChild(fragment);
+            }
+        
+            searchButton.addEventListener('click', () => {
+                const searchValue = dropdown.value;
+                const result = searchParks(searchValue);
+                console.log(result);
+                displayResults(result);
+            });
+        
+            function searchParks(value) {
+                if (searchType === 'Location') {
+                    return nationalParksArray.filter(park => park.State === value);
+                } else if (searchType === 'Type') {
+                    return nationalParksArray.filter(park => park.LocationName.includes(value));
+                }
+                return [];
+            }
+        
+            function displayResults(parks) {
+                displayDiv.innerHTML = '';
+                if (parks.length > 0) {
+                    parks.forEach(park => {
+                        const parkDiv = document.createElement('div');
+                        parkDiv.className = 'park-info';
+                        parkDiv.innerHTML = `
+                            <h2>${park.LocationName}</h2>
+                            <p><strong>locationId:</strong> ${park.LocationID}</p>
+                            <p><strong>Location:</strong> ${park.City}, ${park.State}</p>
+                            <p><strong>Fax:</strong> ${park.Fax || 'No description available.'}</p>
+                        
+                        `;
+                        displayDiv.appendChild(parkDiv);
+                    });
+                } else {
+                    displayDiv.innerHTML = '<p>No parks found.</p>';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
